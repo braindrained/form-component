@@ -67,13 +67,12 @@ class CustomRadio extends React.Component<any, any> {
 						</div>
 					) : null }
 					<div className="float-container">
-						{/* eslint-disable */}
 						{ options.map(item => <div {...{
 							key: `select_${item.name}_${item.value}`,
 							className:
 								hideRadio &&
-								item.value == this.state.value
-									? `floating ${(item.value == options[0].value ? 'selected-radio' : 'selected-radio-red')} type type-selected ${item.className} text-type` : (hideRadio ? `floating type ${item.className} text-type` : item.className),
+								item.value === this.state.value
+									? `floating ${(item.value === options[0].value ? 'selected-radio' : 'selected-radio-red')} type type-selected ${item.className} text-type` : (hideRadio ? `floating type ${item.className} text-type` : item.className),
 							style: item.style
 						}}>
 							<input {...{
@@ -82,7 +81,7 @@ class CustomRadio extends React.Component<any, any> {
 								id: name + item.value,
 								value: item.value,
 								disabled: item.disabled === true,
-								checked: item.value == this.state.value,
+								checked: item.value === this.state.value,
 								onClick: this.handleClick.bind(this),
 								onChange: this.onChange.bind(this)
 							}} />
@@ -90,14 +89,13 @@ class CustomRadio extends React.Component<any, any> {
 								{ hideRadio ? <span className="hide-radio" /> : <div style={item.disabled === true ? { opacity: 0.5 } : {}} />}
 								<div dangerouslySetInnerHTML={{ __html: item.label }} />
 								{ item.customObject ?
-									<div className={item.value == this.state.value ? 'custom-radio-options-wrapper custom-radio-options-wrapper-sel' : 'custom-radio-options-wrapper'}>{item.customObject}</div>
+									<div className={item.value === this.state.value ? 'custom-radio-options-wrapper custom-radio-options-wrapper-sel' : 'custom-radio-options-wrapper'}>{item.customObject}</div>
 									:
 									null
 								}
 							</label>
 						</div>)
 						}
-						{/* eslint-enable */}
 					</div>
 				</div>
 			</div>

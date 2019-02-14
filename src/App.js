@@ -5,7 +5,7 @@ import './App.css';
 import './App.scss';
 import Form from './CustomControls/Form';
 import { makeId } from './helpers/utils';
-import { tipologies } from  './helpers/var';
+import { tipologies, priceRanges } from  './helpers/var';
 
 class App extends Component {
 
@@ -18,7 +18,10 @@ class App extends Component {
 			success: 'Saved!',
 			error: 'Errore nel salvataggio dei dati'
 		},
-		randomKey: makeId()
+		randomKey: makeId(),
+		filter: {
+			priceRange: { min: '', max: '' }
+		}
 	};
 
 	sendForm(formObject: Object) {
@@ -45,7 +48,7 @@ class App extends Component {
 	}
 
   render() {
-		const { editDataSpin, editSucceed, fieldWidth, randomKey, sendButton } = this.state;
+		const { editDataSpin, editSucceed, fieldWidth, randomKey, sendButton, filter } = this.state;
 
     return (
       <div className="App">
@@ -89,6 +92,19 @@ class App extends Component {
 											width: fieldWidth
 										},
 										limitChar: 25
+									},
+									{
+										control: 'fakeselect',
+										name: 'priceRange',
+										text: 'Seleziona...',
+										label: {
+											text: 'Prezzo min/max'
+										},
+										style: { width: 250, maxWidth: 250 },
+										rangesStyle: { width: 250, maxWidth: 250 },
+										value: filter.priceRange,
+										firstRange: priceRanges,
+										secondRange: priceRanges
 									},
 									{
 										control: 'text',
