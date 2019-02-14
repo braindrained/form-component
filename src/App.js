@@ -45,7 +45,7 @@ class App extends Component {
 	}
 
   render() {
-		const { editDataSpin, editSucceed, fieldWidth, saveButtonText, saveButtonSuccessText, saveButtonErrorText, randomKey, sendButton } = this.state;
+		const { editDataSpin, editSucceed, fieldWidth, randomKey, sendButton } = this.state;
 
     return (
       <div className="App">
