@@ -25,14 +25,13 @@ class CustomTextarea extends React.Component<any, any> {
 	}
 
 	render() {
-		const { label, fieldClassName, style } = this.props;
+		const { label, fieldClassName, style, isRequired } = this.props;
 
 		return (
 			<div className={`field-container ${fieldClassName}`} style={style}>
 				<div className={this.state.error ? 'has-error' : null}>
 					<div className="field-label" style={label.style}>
-						{label.text}
-						{this.props.isRequired ? '*' : null}
+						{label.text} {isRequired ? '*' : null}
 					</div>
 					<div>
 						<textarea {...{

@@ -120,7 +120,7 @@ export const emptyUnit = {
 };
 
 export const priceRanges = [
-	{ value: '', text: 'Seleziona' },
+	{ value: '', text: 'Seleziona...' },
 	{ value: '50000', text: '50.000' },
 	{ value: '100000', text: '100.000' },
 	{ value: '150000', text: '150.000' },
@@ -153,7 +153,7 @@ export const priceRanges = [
 ];
 
 export const mqRanges = [
-	{ value: '', text: 'Seleziona' },
+	{ value: '', text: 'Seleziona...' },
 	{ value: '20', text: '20' },
 	{ value: '30', text: '30' },
 	{ value: '40', text: '40' },

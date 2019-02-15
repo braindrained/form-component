@@ -58,10 +58,6 @@ class App extends Component {
 					<ClickOutHandler onClickOut={() => { this.resetButton(); }}>
 						<div className="App-body" onClick={() => { this.resetButton(); }}>
 							<Form {...{
-								key: randomKey,
-								style: {
-									maxWidth: 250
-								},
 								controls: [
 									{
 										control: 'text',
@@ -91,7 +87,9 @@ class App extends Component {
 											float: 'left',
 											width: fieldWidth
 										},
-										limitChar: 25
+										limitChar: 25,
+										isRequired: true,
+										errorMessage: 'Campo obbligatorio'
 									},
 									{
 										control: 'fakeselect',
@@ -151,9 +149,9 @@ class App extends Component {
 									{
 										control: 'radio',
 										name: 'hasTerrace',
-										label: { text: 'Terrazzo' },
+										label: { text: 'This is a fake radio' },
 										options: [
-											{ value: '', label: 'n.i.', className: 'first' },
+											{ value: '', label: 'N.i.', className: 'first' },
 											{ value: 'true', label: 'Sì', className: 'central' },
 											{ value: 'false', label: 'No', className: 'last' },
 										],
@@ -161,15 +159,47 @@ class App extends Component {
 										value: '',
 										hideRadio: true,
 										fieldClassName: 'custom-radio-container',
-										style: {},
+										style: {
+											width: fieldWidth
+										},
+									},
+									{
+										control: 'radio',
+										name: 'genericRadio',
+										label: { text: 'This is an almost real radio', style: { } },
+										options: [
+											{ value: '', label: 'N.i.', style: { width: '100%', float: 'left' } },
+											{ value: 'true', label: 'Sì', style: { width: '100%', float: 'left' } },
+											{ value: 'false', label: 'No', style: { width: '100%', float: 'left' } },
+										],
+										default: '',
+										value: '',
+										hideRadio: false,
+										style: {
+											minHeight: 'auto',
+											width: fieldWidth
+										},
+									},
+									{
+										control: 'check',
+										name: 'isACheckBox',
+										label: { text: 'Questa è una checkbox' },
+										value:	false,
+										hideCheck: true,
+										style: { },
 									},
 								],
 								sendButton: {
-									className: (editSucceed !== null ? (editSucceed ? 'btn btn-succeed' : 'btn btn-error') : 'btn btn-red') + (editDataSpin ? ' spinner' : ''),
+									className: `${editSucceed !== null ? (editSucceed ? 'btn btn-succeed' : 'btn btn-error') : 'btn btn-red'} ${editDataSpin ? 'spinner' : ''}`,
 									value: editSucceed !== null ? (editSucceed ? sendButton.success : sendButton.error) : sendButton.text,
-									style: { minWidth: 250 }
+									style: { minWidth: 250, margin: '0 auto', float: 'none' }
 								},
+								buttonContainerStyle: { textAlign: 'center' },
 								sendForm: (e) => { this.sendForm(e); },
+								key: randomKey,
+								style: {
+									width: 560
+								},
 							}} />
 						</div>
 					</ClickOutHandler>

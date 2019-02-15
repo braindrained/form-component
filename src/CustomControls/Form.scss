@@ -31,7 +31,7 @@
 		height: 19px;
 		vertical-align: middle;
 		margin: -2px 3px 0 0;
-		background: url('/admin/assets/img/check_radio_sprite.png') left 0px no-repeat;
+		background: url('../assets/img/check_radio_sprite.png') left 0px no-repeat;
 		cursor: pointer;
 		float: left;
 	}
@@ -45,20 +45,20 @@
 	}
 
 	input[type="checkbox"]:checked + label > div:first-child {
-		background: url('/admin/assets/img/check_radio_sprite.png') -19px 0px no-repeat;
+		background: url('../assets/img/check_radio_sprite.png') -19px 0px no-repeat;
 	}
 
 	input[type="radio"] + label > div:first-child {
-		background: url('/admin/assets/img/check_radio_sprite.png') -39px 0px no-repeat;
+		background: url('../assets/img/check_radio_sprite.png') -39px 0px no-repeat;
 	}
 
 	input[type="radio"]:checked + label > div:first-child {
-		background: url('/admin/assets/img/check_radio_sprite.png') -58px 0px no-repeat;
+		background: url('../assets/img/check_radio_sprite.png') -58px 0px no-repeat;
 	}
 
 	input[type=email], input[type=number], input[type=password], input[type=tel], input[type=text], textarea {
 			border: 1px solid #949da2;
-			padding: 7px 8px;
+			padding: 8px 8px;
 			border-radius: 2px;
 			color: #333f48;
 			background-color: #fff;
@@ -93,7 +93,8 @@
 	.field-container {
 		width: auto;
 		float: left;
-		min-height: 66px;
+		min-height: 74px;
+		margin: 0px 15px;
 		@media screen and (max-width: 600px) {
 			float: left!important;
 		}
@@ -169,16 +170,16 @@
 
 	.custom-radiocheck {
 		input[type="radio"] + label > div:first-child {
-			background: url('/admin/assets/img/check_radio_sprite.png') -39px 0px no-repeat!important;
+			background: url('../assets/img/check_radio_sprite.png') -39px 0px no-repeat!important;
 		}
 
 		input[type="radio"]:checked + label > div:first-child {
-			background: url('/admin/assets/img/check_radio_sprite.png') -58px 0px no-repeat!important;
+			background: url('../assets/img/check_radio_sprite.png') -58px 0px no-repeat!important;
 		}
 	}
 
 	.select-style{
-		background: #fff url("/admin/assets/img/arrow_down.png") no-repeat right 3px;
+		background: #fff url("../assets/img/arrow_down.png") no-repeat right 3px;
 		height: 33px;
 		width: 100%;
 		display: inline-block;
@@ -228,14 +229,17 @@
 
 	.custom-radio-container {
 		text-align: center;
-		//top:-1px;
-		//line-height: 50px;
-		//min-height: 50px;
+		-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			 -khtml-user-select: none; /* Konqueror HTML */
+				 -moz-user-select: none; /* Firefox */
+					-ms-user-select: none; /* Internet Explorer/Edge */
+							user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 		clear: both;
 		.field-label {
 			float: left;
 			width: auto;
-			min-width: 285px;
+			min-width: 120px;
 			@media screen and (max-width: 600px) {
 				width: 140px;
 				min-width: 200px;
@@ -367,6 +371,33 @@
 			border-radius:0px 4px 4px 0px;
 			width: 60px;
 			background: #fff;
+		}
+	}
+
+	.validation-error {
+		color: #e4002b;
+		font-size: 11px;
+		display: block;
+		clear: both;
+		min-height: 19px;
+		text-align: right;
+    line-height: 19px;
+	}
+
+	.react-datepicker__input-container input[type="text"] {
+		background-image: url(/assets/img/icons/baseline-date_range-24px.svg);
+		background-position: -webkit-calc(100% - 5px) center;
+		background-position: -moz-calc(100% - 5px) center;
+		background-position: calc(100% - 5px) center;
+		background-repeat: no-repeat;
+		background-size: 20px;
+	}
+
+	.regular-radio {
+		.float-container {
+			div {
+				min-height: 30px
+			}
 		}
 	}
 

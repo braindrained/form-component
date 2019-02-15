@@ -52,9 +52,10 @@ class CustomRadio extends React.Component<any, any> {
 
 	render() {
 		const { fieldClassName, style, label, name, hideRadio, textBefore, options, css } = this.props;
+		const contStyle = Object.assign({}, style, hideRadio === false ? { marginBottom: 19 } : {});
 
 		return (
-			<div className={(hideRadio ? 'field-container toggle-format ' : 'field-container ') + fieldClassName} style={style}>
+			<div className={`${hideRadio ? 'field-container toggle-format ' : 'field-container regular-radio '} ${fieldClassName}`} style={contStyle}>
 				{ textBefore ? (
 					<div style={textBefore.style}>
 						{textBefore.text}
@@ -62,9 +63,9 @@ class CustomRadio extends React.Component<any, any> {
 				) : null }
 				<div className={css}>
 					{ label ? (
-						<div className={hideRadio ? 'field-label noselect' : ''} style={label.style}>
+						<label className={'field-label noselect'} style={label.style}>
 							{label.text}
-						</div>
+						</label>
 					) : null }
 					<div className="float-container">
 						{ options.map(item => <div {...{

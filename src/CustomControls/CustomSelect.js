@@ -59,7 +59,9 @@ class CustomSelect extends React.Component<any, any> {
 		return (
 			<div className={`field-container ${fieldClassName}`} style={style}>
 				{ label ?
-					<div className="field-label noselect" style={Object.assign({}, label.style, !isValid ? { color: '#e4002b' } : {})}>{label.text}</div>
+					<div className="field-label noselect" style={Object.assign({}, label.style, !isValid ? { color: '#e4002b' } : {})}>
+						{label.text} {isRequired ? '*' : null}
+					</div>
 					:
 					null
 				}
