@@ -10,6 +10,12 @@ export default class CustomCheckBox extends React.Component<any, any> {
 		value: this.props.value
 	};
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.value !== nextProps.value) return true;
+		if (this.state.value !== nextState.value) return true;
+    return false;
+	}
+
 	onChange(event: Object) {
 		this.setState({
 			value: event.target.checked

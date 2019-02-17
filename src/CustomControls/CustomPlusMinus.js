@@ -19,7 +19,6 @@ class CustomPlusMinus extends React.Component<any, any> {
 		regEx: null,
 		equalTo: null,
 		isRequired: false,
-		onlyNumber: false,
 		isValid: true,
 		value: null,
 	};
@@ -30,9 +29,16 @@ class CustomPlusMinus extends React.Component<any, any> {
 		error: !this.props.isValid
 	};
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.value !== nextProps.value) return true;
+		if (this.state.value !== nextState.value) return true;
+    return false;
+	}
+
 	onChange(event: Object) {
+		const value = parseInt(event.target.value === '' ? 0 : event.target.value, 10);
 		this.setState({
-			value: parseFloat(this.props.onlyNumber ? event.target.value.replace(/\D/g, '') : event.target.value),
+			value: value,
 			error: false,
 		});
 	}
@@ -41,12 +47,13 @@ class CustomPlusMinus extends React.Component<any, any> {
 		this.props.onUpdate(event, false);
 	}
 
-	handleKeyPress(val: Object) {
-		if (val.key === 'Enter') {
-			val.preventDefault();
+	handleKeyPress(event: Object) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
 		} else {
+			const value = parseInt(event.target.value === '' ? 0 : event.target.value, 10);
 			this.setState({
-				value: parseFloat(val.target.value),
+				value: value,
 				error: false,
 			});
 		}
@@ -72,15 +79,15 @@ class CustomPlusMinus extends React.Component<any, any> {
 
 	render() {
 		const { fieldClassName, style, label, name, type, disabled, noValidation, isRequired, errorMessage, textAfter } = this.props;
-
+console.log('render', this.props.name);
 		return (
 			<div className={`field-container cutom-plus-minus ${fieldClassName}`} style={style}>
 				<div className={this.state.error ? 'text-style has-error' : 'text-style'}>
 					{ label ? (
-						<div className="field-label noselect" style={Object.assign({}, label.style, this.state.error ? { color: '#e4002b' } : {})}>
+						<label className="field-label noselect" style={Object.assign({}, label.style, this.state.error ? { color: '#e4002b' } : {})}>
 							{label.text}
 							{label.object ? label.object : null}
-						</div>) :
+						</label>) :
 						null
 					}
 					<div style={{ float: 'left' }}>
@@ -114,7 +121,7 @@ class CustomPlusMinus extends React.Component<any, any> {
 								onKeyPress: (e) => { this.handleKeyPress(e); },
 								onChange: this.onChange.bind(this),
 								onBlur: this.onBlur.bind(this),
-								style: { border: 'none', background: 'none', width: 40 }
+								style: { border: 'none', background: 'none', width: 40, textAlign: 'center' }
 							}} />
 						</div>
 						<div {...{
@@ -157,7 +164,6 @@ CustomPlusMinus.propTypes = {
 	regEx: PropTypes.string,
 	equalTo: PropTypes.func,
 	isRequired: PropTypes.bool,
-	onlyNumber: PropTypes.bool,
 	isValid: PropTypes.bool,
 	value: PropTypes.number,
 };
@@ -177,7 +183,6 @@ CustomPlusMinus.defaultProps = {
 	regEx: null,
 	equalTo: null,
 	isRequired: false,
-	onlyNumber: false,
 	isValid: true,
 	value: null,
 };

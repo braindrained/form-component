@@ -6,10 +6,12 @@
 	z-index: -1;
 	transition-duration: 0.3s, 0.3s;
 	transition-timing-function: ease-in, ease-out;
+	padding-top: 15px;
 	.min-max {
 		float: left;
 		line-height: 33px;
 		font-size: 11px;
 		color: rgb(106, 119, 134);
+		margin-left: 15px;
 	}
 }

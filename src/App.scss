@@ -129,7 +129,6 @@ h1, h2, h3, h4, h5, h6{
 			font-size: 12px!important;
 			color: #697684!important;
 			background: transparent;
-			font-weight: 700;
 			&:hover {
 				background: transparent!important;
 				border-color: none;
@@ -141,7 +140,6 @@ h1, h2, h3, h4, h5, h6{
 			font-size: 12px!important;
 			color: #e4002b!important;
 			background: transparent;
-			font-weight: 700;
 			&:hover {
 				background: transparent!important;
 				border-color: none;
@@ -177,12 +175,11 @@ h1, h2, h3, h4, h5, h6{
 			border: 1px solid #00c694!important;
 			color: #fff!important;
 			padding-left: 35px;
-			background-image: url(/assets/img/check.svg);
+			background-image: url('/assets/img/check.svg');
 			background-repeat: no-repeat;
 			background-position: 5px center;
 			background-size: 20px;
 			line-height: 30px!important;
-			font-weight: 700;
 		}
 
 		.btn-white {
@@ -201,14 +198,13 @@ h1, h2, h3, h4, h5, h6{
 			border: 1px solid #e4002b!important;
 			color: #fff!important;
 			padding-left: 35px;
-			background-image: url('/assets/img/x.svg');
+			background-image: url('/assets/img/x.svg')!important;
 			background-repeat: no-repeat;
 			background-position: 10px 10px;
 			font-size: 13px;
 			max-height: 41px;
 			overflow: hidden;
 			line-height: 38px!important;
-			font-weight: 700;
 		}
 
 		.btn-error-small {
@@ -221,7 +217,6 @@ h1, h2, h3, h4, h5, h6{
 			background-position: 10px center;
 			background-size: 12px;
 			line-height: 30px!important;
-			font-weight: 700;
 		}
 
 		.btn-gray-small {

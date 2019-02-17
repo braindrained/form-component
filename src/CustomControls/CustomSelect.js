@@ -23,8 +23,15 @@ class CustomSelect extends React.Component<any, any> {
 		options: this.props.options,
 	};
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.value !== nextProps.value) return true;
+		if (this.state.value !== nextState.value) return true;
+    return false;
+	}
+
 	componentWillReceiveProps(nextProps: Object) {
 		if (nextProps.options.length !== this.state.options.length) {
+			console.log('componentWillReceiveProps');
 			this.setState({
 				options: nextProps.options
 			});
@@ -33,17 +40,6 @@ class CustomSelect extends React.Component<any, any> {
 				target: {
 					name: this.props.name,
 					value: ''
-				}
-			});
-		}
-	}
-
-	componentWillMount() {
-		if (this.props.value === '') {
-			this.props.onUpdate({
-				target: {
-					name: this.props.name,
-					value: this.props.default ? this.props.default : '0',
 				}
 			});
 		}

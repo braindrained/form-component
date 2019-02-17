@@ -15,7 +15,6 @@ class CustomTextField extends React.Component<any, any> {
 		errorMessage: null,
 		fieldClassName: null,
 		style: null,
-		formIsValid: null,
 		equalTo: null,
 		isRequired: false,
 		onlyNumber: false,
@@ -28,6 +27,13 @@ class CustomTextField extends React.Component<any, any> {
 		error: !this.props.isValid,
 		editing: false,
 	};
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.value !== nextProps.value) return true;
+		if (this.state.value !== nextState.value) return true;
+		if (this.props.isValid !== nextProps.isValid) return true;
+    return false;
+	}
 
 	componentWillReceiveProps(nextProps: Object) {
 		if (this.state.value !== nextProps.value) {
@@ -91,7 +97,7 @@ class CustomTextField extends React.Component<any, any> {
 	render() {
 		const {
 			fieldClassName, style, label, name, isRequired, greaterThan, regEx,
-			errorMessage, type, placeholder, currency, disabled, noValidation, textAfter
+			errorMessage, type, placeholder, currency, disabled, noValidation, textAfter, equalTo
 		} = this.props;
 
 		return (
@@ -123,7 +129,7 @@ class CustomTextField extends React.Component<any, any> {
 						null
 						:
 						<div className="validation-error noselect">
-							{(isRequired || greaterThan || regEx) && this.state.error ? errorMessage : '' }
+							{(isRequired || greaterThan || regEx || equalTo) && this.state.error ? errorMessage : '' }
 							&nbsp;
 						</div>
 					}
@@ -148,8 +154,7 @@ CustomTextField.propTypes = {
 	errorMessage: PropTypes.string,
 	fieldClassName: PropTypes.string,
 	style: PropTypes.instanceOf(Object),
-	formIsValid: PropTypes.func,
-	equalTo: PropTypes.func,
+	equalTo: PropTypes.string,
 	isRequired: PropTypes.bool,
 	onlyNumber: PropTypes.bool,
 	isValid: PropTypes.bool,
@@ -170,8 +175,7 @@ CustomTextField.defaultProps = {
 	errorMessage: null,
 	fieldClassName: null,
 	style: null,
-	formIsValid: null,
-	equalTo: null,
+	equalTo: '',
 	isRequired: false,
 	onlyNumber: false,
 	isValid: true,

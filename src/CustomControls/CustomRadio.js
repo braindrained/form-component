@@ -21,6 +21,12 @@ class CustomRadio extends React.Component<any, any> {
 		value: this.props.value !== null ? this.props.value : '',
 	};
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.value !== nextProps.value) return true;
+		if (this.state.value !== nextState.value) return true;
+    return false;
+	}
+
 	onChange(event: Object) {
 		this.setState({
 			value: event.target.value
@@ -52,10 +58,9 @@ class CustomRadio extends React.Component<any, any> {
 
 	render() {
 		const { fieldClassName, style, label, name, hideRadio, textBefore, options, css } = this.props;
-		const contStyle = Object.assign({}, style, hideRadio === false ? { marginBottom: 19 } : {});
 
 		return (
-			<div className={`${hideRadio ? 'field-container toggle-format ' : 'field-container regular-radio '} ${fieldClassName}`} style={contStyle}>
+			<div className={`${hideRadio ? 'field-container toggle-format ' : 'field-container regular-radio '} ${fieldClassName}`} style={style}>
 				{ textBefore ? (
 					<div style={textBefore.style}>
 						{textBefore.text}

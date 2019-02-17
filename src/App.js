@@ -12,11 +12,10 @@ class App extends Component {
 	state = {
 		editDataSpin: false,
 		editSucceed: null,
-		fieldWidth: 250,
 		sendButton: {
 			text: 'Save',
 			success: 'Saved!',
-			error: 'Errore nel salvataggio dei dati'
+			error: 'Error saving data'
 		},
 		randomKey: makeId(),
 		filter: {
@@ -33,8 +32,7 @@ class App extends Component {
 		setTimeout(() => {
 			this.setState({
 				editDataSpin: false,
-				editSucceed: true,
-				saveButtonSuccessText: 'Dati salvati correttamente'
+				editSucceed: true
 			});
 		}, 3000);
 	}
@@ -48,7 +46,9 @@ class App extends Component {
 	}
 
   render() {
-		const { editDataSpin, editSucceed, fieldWidth, randomKey, sendButton, filter } = this.state;
+		const { editDataSpin, editSucceed, randomKey, sendButton, filter } = this.state;
+		const sendButtonClass = `${editSucceed !== null ? (editSucceed ? 'btn btn-succeed' : 'btn btn-error') : 'btn'} ${editDataSpin ? 'spinner' : ''}`;
+		const sendButtonText = editSucceed !== null ? (editSucceed ? sendButton.success : sendButton.error) : sendButton.text;
 
     return (
       <div className="App">
@@ -69,7 +69,6 @@ class App extends Component {
 										value: '',
 										style: {
 											float: 'left',
-											width: fieldWidth,
 										},
 										limitChar: 25,
 										isRequired: true,
@@ -85,7 +84,6 @@ class App extends Component {
 										value: '',
 										style: {
 											float: 'left',
-											width: fieldWidth
 										},
 										limitChar: 25,
 										isRequired: true,
@@ -96,10 +94,10 @@ class App extends Component {
 										name: 'priceRange',
 										text: 'Seleziona...',
 										label: {
-											text: 'Prezzo min/max'
+											text: 'Fake select min/max'
 										},
-										style: { width: 250, maxWidth: 250 },
-										rangesStyle: { width: 250, maxWidth: 250 },
+										style: {},
+										rangesStyle: { width: 190, maxWidth: 190 },
 										value: filter.priceRange,
 										firstRange: priceRanges,
 										secondRange: priceRanges
@@ -113,8 +111,7 @@ class App extends Component {
 										label: { text: 'Age' },
 										value: '',
 										style: {
-											float: 'left',
-											width: fieldWidth
+											float: 'left'
 										},
 										limitChar: 3
 									},
@@ -122,28 +119,25 @@ class App extends Component {
 										control: 'plusMinus',
 										type: 'text',
 										name: 'roomNum',
-										onlyNumber: true,
 										label: {
 											text: 'N. Locali',
 										},
 										value: 0,
 										isRequired: false,
 										style: {
-											float: 'left',
-											width: fieldWidth
+											float: 'left'
 										},
 									},
 									{
 										control: 'select',
 										name: 'propertyTypeId',
-										label: { text: 'Tipo immobile' },
+										label: { text: 'This is a select' },
 										hideRadio: true,
 										options: tipologies.filter(o => o.type.indexOf(parseFloat(1)) !== -1),
 										value: '',
 										optionIf: [],
 										style: {
-											float: 'left',
-											width: fieldWidth
+											float: 'left'
 										},
 									},
 									{
@@ -159,9 +153,7 @@ class App extends Component {
 										value: '',
 										hideRadio: true,
 										fieldClassName: 'custom-radio-container',
-										style: {
-											width: fieldWidth
-										},
+										style: {},
 									},
 									{
 										control: 'radio',
@@ -176,29 +168,75 @@ class App extends Component {
 										value: '',
 										hideRadio: false,
 										style: {
-											minHeight: 'auto',
-											width: fieldWidth
+											minHeight: 'auto'
 										},
+									},
+									{
+										control: 'text',
+										type: 'text',
+										name: 'anotherText',
+										onlyNumber: false,
+										placeholder: 'Another text input',
+										label: { text: 'Another text input' },
+										value: '',
+										style: {
+											float: 'left'
+										},
+										limitChar: 25,
 									},
 									{
 										control: 'check',
 										name: 'isACheckBox',
-										label: { text: 'Questa è una checkbox' },
+										label: { text: 'This is an almost real checkbox' },
 										value:	false,
 										hideCheck: true,
-										style: { },
+										style: {
+											float: 'left'
+										},
+									},
+									{
+										control: 'text',
+										type: 'password',
+										name: 'pwd',
+										onlyNumber: false,
+										placeholder: 'Password',
+										label: { text: 'Password' },
+										value: '',
+										style: {
+											float: 'left',
+										},
+										limitChar: 12,
+										isRequired: true,
+										errorMessage: 'Campo obbligatorio',
+										isValid: true
+									},
+									{
+										control: 'text',
+										type: 'password',
+										name: 'repeatPwd',
+										onlyNumber: false,
+										placeholder: 'Ripeti Password',
+										label: { text: 'Ripeti Password' },
+										value: '',
+										style: {
+											float: 'left',
+										},
+										limitChar: 12,
+										errorMessage: 'La password non coincide',
+										isValid: true,
+										equalTo: 'pwd'
 									},
 								],
 								sendButton: {
-									className: `${editSucceed !== null ? (editSucceed ? 'btn btn-succeed' : 'btn btn-error') : 'btn btn-red'} ${editDataSpin ? 'spinner' : ''}`,
-									value: editSucceed !== null ? (editSucceed ? sendButton.success : sendButton.error) : sendButton.text,
+									className: sendButtonClass,
+									value: sendButtonText,
 									style: { minWidth: 250, margin: '0 auto', float: 'none' }
 								},
 								buttonContainerStyle: { textAlign: 'center' },
 								sendForm: (e) => { this.sendForm(e); },
 								key: randomKey,
 								style: {
-									width: 560
+									maxWidth: 560
 								},
 							}} />
 						</div>

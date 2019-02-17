@@ -27,6 +27,13 @@ class FakeSelect extends React.Component<any, any> {
 		displaySelect: true
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.value !== nextProps.value) return true;
+		if (this.state.value !== nextState.value) return true;
+		if (this.state.displaySelect !== nextState.displaySelect) return true;
+    return false;
+	}
+
 	onClick(val: boolean) {
 		if (val !== this.state.displaySelect) {
 			this.setState({
@@ -54,7 +61,8 @@ class FakeSelect extends React.Component<any, any> {
 	render() {
 		const { fieldClassName, style, label, text, firstRange, secondRange, rangesStyle } = this.props;
 		const { displaySelect, value } = this.state;
-
+		const maxRange = this.props.value.min === '' ? secondRange : secondRange.filter(o => o.value > this.props.value.min || o.value === '');
+console.log('render', this.props.name);
 		return (
 			<div className={`field-container ${fieldClassName}`} style={style}>
 				{ label ?
@@ -87,7 +95,7 @@ class FakeSelect extends React.Component<any, any> {
 
 					<div className="fake-cont" style={{ width: style.maxWidth, opacity: displaySelect ? '0' : '1', zIndex: displaySelect ? -1 : 1 }}>
 						<div className="min-max">Min</div>
-						<div className="select-style" style={Object.assign({}, rangesStyle, { marginBottom: 15, float: 'right' })}>
+						<div className="select-style" style={Object.assign({}, rangesStyle, { marginRight: 15, marginBottom: 15, float: 'right' })}>
 							<select name="min" id="min" value={this.props.value.min} onChange={(o) => { this.onChange(o); }}>
 								{
 									firstRange.map(item => <option value={item.value} key={`f_${item.value}`}>{item.text}</option>)
@@ -96,10 +104,10 @@ class FakeSelect extends React.Component<any, any> {
 						</div>
 						<div className="clear" />
 						<div className="min-max">Max</div>
-						<div className="select-style" style={Object.assign({}, rangesStyle, { marginBottom: 15, float: 'right' })}>
+						<div className="select-style" style={Object.assign({}, rangesStyle, { marginRight: 15, marginBottom: 15, float: 'right' })}>
 							<select name="max" id="max" value={this.props.value.max} onChange={(o) => { this.onChange(o); }}>
 								{
-									secondRange.map(item => <option value={item.value} key={`f_${item.value}`}>{item.text}</option>)
+									maxRange.map(item => <option value={item.value} key={`f_${item.value}`}>{item.text}</option>)
 								}
 							</select>
 						</div>
