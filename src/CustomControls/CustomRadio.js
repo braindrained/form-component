@@ -1,14 +1,15 @@
 // @flow
 import React from 'react';
 import PropTypes from 'prop-types';
+import FieldLabel from './childrenComponents/FieldLabel';
+import { sumClasses } from '../helpers/utils';
 
-// flow-disable-next-line
 import './CustomRadio.scss';
 
 class CustomRadio extends React.Component<any, any> {
 
 	static defaultProps = {
-		fieldClassName: null,
+		className: null,
 		textBefore: null,
 		hideRadio: null,
 		css: null,
@@ -57,21 +58,20 @@ class CustomRadio extends React.Component<any, any> {
 	}
 
 	render() {
-		const { fieldClassName, style, label, name, hideRadio, textBefore, options, css } = this.props;
+		const { className, style, label, name, hideRadio, textBefore, options, css, isRequired, isValid } = this.props;
 
 		return (
-			<div className={`${hideRadio ? 'field-container toggle-format ' : 'field-container regular-radio '} ${fieldClassName}`} style={style}>
+			<div className={sumClasses([
+					hideRadio ? 'field-container toggle-format' : 'field-container regular-radio',
+					className
+				])} style={style}>
 				{ textBefore ? (
 					<div style={textBefore.style}>
 						{textBefore.text}
 					</div>
 				) : null }
 				<div className={css}>
-					{ label ? (
-						<label className={'field-label noselect'} style={label.style}>
-							{label.text}
-						</label>
-					) : null }
+					<FieldLabel {...{ label, name, isRequired, isValid }}/>
 					<div className="float-container">
 						{ options.map(item => <div {...{
 							key: `select_${item.name}_${item.value}`,
@@ -110,7 +110,7 @@ class CustomRadio extends React.Component<any, any> {
 }
 
 CustomRadio.propTypes = {
-	fieldClassName: PropTypes.string,
+	className: PropTypes.string,
 	onUpdate: PropTypes.func.isRequired,
 	textBefore: PropTypes.instanceOf(Object),
 	hideRadio: PropTypes.bool,
@@ -127,7 +127,7 @@ CustomRadio.propTypes = {
 };
 
 CustomRadio.defaultProps = {
-	fieldClassName: null,
+	className: null,
 	textBefore: null,
 	hideRadio: null,
 	css: null,

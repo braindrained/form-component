@@ -15,7 +15,7 @@ import CustomPlusMinus from './CustomPlusMinus';
 import FakeSelect from './FakeSelect';
 import './Form.scss';
 
-import { notEmpty } from '../helpers/utils';
+import { notEmpty, sumClasses } from '../helpers/utils';
 
 const Form = class extends React.Component<any, any> {
 
@@ -25,6 +25,8 @@ const Form = class extends React.Component<any, any> {
 		sendButton: null,
 		style: null,
 		sendForm: null,
+		succeed: null,
+		isSent: null,
 	};
 
 	state = {
@@ -95,92 +97,101 @@ const Form = class extends React.Component<any, any> {
 		}
 	}
 
-	formIsValid(val: string) {
-		if (val !== 'btn btn-succeed' && val !== 'btn btn-error' && val !== 'btn btn-succeed btn-succeed-big') {
-			let formIsValid = true;
+	formIsValid() {
+		let formIsValid = true;
 
-			const updatedControls = this.state.controls.map((item) => {
-				if (item.isRequired && !item.hide) {
-					if (item.control !== 'select' && (item.value === '' || !item.value)) {
-						item.isValid = false;
-						formIsValid = false;
-					} else if (item.control === 'select' && item.value === '0' && item.value === 0) {
-						item.isValid = false;
-						formIsValid = false;
-					}
+		const updatedControls = this.state.controls.map((item) => {
+			if (item.isRequired && !item.hide) {
+				if (item.control !== 'select' && (item.value === '' || !item.value)) {
+					item.isValid = false;
+					formIsValid = false;
+				} else if (item.control === 'select' && item.value === '0' && item.value === 0) {
+					item.isValid = false;
+					formIsValid = false;
 				}
+			}
 
-				if (typeof item.value === 'object' && item.valueAsObject) {
-					if (item.value && item.value.filter(o => o.isRequired === true).length > 0) {
-						const updatedValues = item.value.map((itemS) => {
-							if (itemS.isRequired) {
-								if (itemS.value === '' || !itemS.value) {
-									itemS.isValid = false;
-									item.isValid = false;
-									formIsValid = false;
-								}
+			if (typeof item.value === 'object' && item.valueAsObject) {
+				if (item.value && item.value.filter(o => o.isRequired === true).length > 0) {
+					const updatedValues = item.value.map((itemS) => {
+						if (itemS.isRequired) {
+							if (itemS.value === '' || !itemS.value) {
+								itemS.isValid = false;
+								item.isValid = false;
+								formIsValid = false;
 							}
-							return null;
-						});
-						item.value = updatedValues;
-					}
+						}
+						return null;
+					});
+					item.value = updatedValues;
 				}
-				if (item.regEx !== undefined && !item.hide) {
-					if (item.value !== '' &&	!item.regEx.test(item.value)) {
-						item.isValid = false;
-						formIsValid = false;
-					}
+			}
+			if (item.regEx !== undefined && !item.hide) {
+				if (item.value !== '' &&	!item.regEx.test(item.value)) {
+					item.isValid = false;
+					formIsValid = false;
 				}
-				if (item.equalTo !== undefined) {
-					const valueToCompare = this.state.controls.filter(o => o.name === item.equalTo)[0].value;
-					if (!(item.value === valueToCompare) || item.value === '') {
-						item.isValid = false;
-						formIsValid = false;
-					}
+			}
+			if (item.equalTo !== undefined) {
+				const valueToCompare = this.state.controls.filter(o => o.name === item.equalTo)[0].value;
+				if (!(item.value === valueToCompare) || item.value === '') {
+					item.isValid = false;
+					formIsValid = false;
 				}
-				if (item.greaterThan !== undefined) {
-					const valueToCompare = this.state.controls.filter(o => o.name === item.greaterThan)[0].value;
-					if (parseFloat(item.value.toString().replace(/\./g, '')) < parseFloat(valueToCompare.toString().replace(/\./g, ''))) {
-						item.isValid = false;
-						formIsValid = false;
-					}
+			}
+			if (item.greaterThan !== undefined) {
+				const valueToCompare = this.state.controls.filter(o => o.name === item.greaterThan)[0].value;
+				if (parseFloat(item.value.toString().replace(/\./g, '')) < parseFloat(valueToCompare.toString().replace(/\./g, ''))) {
+					item.isValid = false;
+					formIsValid = false;
 				}
-				return item;
+			}
+			return item;
+		});
+
+		this.setState({
+			controls: updatedControls
+		});
+
+		if (formIsValid) {
+			const formObject = {};
+			updatedControls.map((item) => {
+				if (item.control !== 'label') {
+					formObject[item.name] = item.value;
+				}
+				return null;
 			});
 
-			this.setState({
-				controls: updatedControls
-			});
+			this.props.sendForm(formObject);
+		} else {
+			const firstRequired = updatedControls.filter(o => (o.isRequired && !o.isValid) || (o.greaterThan && !o.isValid) || (o.regEx && !o.isValid) || (o.equalTo && !o.isValid))[0];
 
-			if (formIsValid) {
-				const formObject = {};
-				updatedControls.map((item) => {
-					if (item.control !== 'label') {
-						formObject[item.name] = item.value;
-					}
-					return null;
-				});
-
-				this.props.sendForm(formObject);
+			if (typeof firstRequired.value === 'object') {
+				const subFieldRequired = firstRequired.value.filter(o => (o.isRequired && !o.isValid) || (o.greaterThan && !o.isValid) || (o.regEx && !o.isValid) || (o.equalTo && !o.isValid))[0];
+				document.getElementById(subFieldRequired.name).focus();
 			} else {
-				const firstRequired = updatedControls.filter(o => (o.isRequired && !o.isValid) || (o.greaterThan && !o.isValid) || (o.regEx && !o.isValid) || (o.equalTo && !o.isValid))[0];
-
-				if (typeof firstRequired.value === 'object') {
-					const subFieldRequired = firstRequired.value.filter(o => (o.isRequired && !o.isValid) || (o.greaterThan && !o.isValid) || (o.regEx && !o.isValid) || (o.equalTo && !o.isValid))[0];
-					document.getElementById(subFieldRequired.name).focus();
-				} else {
-					document.getElementById(firstRequired.name).focus();
-				}
+				document.getElementById(firstRequired.name).focus();
 			}
 		}
 	}
 
 	render() {
-		const { className, style, viewport } = this.props;
+		const {
+			className, style, viewport, succeed, isSent,
+			sendButton, textBeforeButton, buttonContainerStyle,
+			textAfterButton
+		} = this.props;
+		const { controls } = this.state;
+		const sendButtonClass = sumClasses([
+			succeed !== null ? (succeed ? 'btn btn-succeed' : 'btn btn-error') : 'btn',
+			isSent ? 'spinner' : '',
+			sendButton.disabled ? 'btn-disabled' : ''
+		]);
+		const sendButtonValue = succeed === null ? sendButton.value.text : succeed === false ? sendButton.value.errorText : sendButton.value.succeedText;
 
 		return (
-			<div className={`form-container ${className !== null && className !== undefined ? className : ''}`} style={style}>
-				{ this.state.controls.map((item) => {
+			<div className={sumClasses(['form-container', className !== null && className !== undefined ? className : ''])} style={style}>
+				{ controls.map((item) => {
 					switch (item.control) {
 					default:
 						return null;
@@ -201,7 +212,7 @@ const Form = class extends React.Component<any, any> {
 								actions: item.actions,
 								jwt: item.jwt,
 								onUpdate: (e) => { this.onUpdate(e) },
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								device: this.props.device,
 								isRequired: item.isRequired,
 								isValid: item.isValid,
@@ -223,19 +234,15 @@ const Form = class extends React.Component<any, any> {
 								value: item.value ? item.value : '',
 								onUpdate: (e) => { this.onUpdate(e) },
 								isRequired: item.isRequired,
-								regEx: item.regEx,
 								isValid: item.isValid,
 								disabled: item.disabled,
 								errorMessage: item.errorMessage,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								style: item.style,
 								textAfter: item.textAfter,
-								noValidation: item.noValidation,
 								updateOnChange: item.updateOnChange,
-								greaterThan: item.greaterThan,
 								limitChar: item.limitChar,
 								currency: item.currency,
-								equalTo: item.equalTo
 							}} />
 						);
 					case 'plusMinus':
@@ -251,14 +258,12 @@ const Form = class extends React.Component<any, any> {
 								value: parseFloat(item.value),
 								onUpdate: (e) => { this.onUpdate(e) },
 								isRequired: item.isRequired,
-								regEx: item.regEx,
 								isValid: item.isValid,
 								disabled: item.disabled,
 								errorMessage: item.errorMessage,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								style: item.style,
 								textAfter: item.textAfter,
-								noValidation: item.noValidation,
 							}} />
 						);
 					case 'textArea':
@@ -269,13 +274,13 @@ const Form = class extends React.Component<any, any> {
 								placeholder: item.placeholder,
 								name: item.name,
 								label: item.label,
-								value: item.value,
+								value: item.value ? item.value : '',
 								onUpdate: (e) => { this.onUpdate(e) },
 								isRequired: item.isRequired,
 								isValid: item.isValid,
 								errorMessage: item.errorMessage,
 								style: item.style,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 							}} />
 						);
 					case 'select':
@@ -290,12 +295,11 @@ const Form = class extends React.Component<any, any> {
 								onUpdate: (e) => { this.onUpdate(e) },
 								value: item.value,
 								style: item.style,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								isRequired: item.isRequired,
 								isValid: item.isValid,
 								errorMessage: item.errorMessage,
 								default: item.default,
-								greaterThan: item.greaterThan,
 							}} />
 						);
 					case 'check':
@@ -310,7 +314,7 @@ const Form = class extends React.Component<any, any> {
 								textBefore: item.textBefore,
 								textAfter: item.textAfter,
 								hideCheck: item.hideCheck,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								onUpdate: (e) => { this.onUpdate(e) },
 							}} />
 						);
@@ -326,7 +330,7 @@ const Form = class extends React.Component<any, any> {
 								value: notEmpty(item.value) ? item.value : item.default,
 								hideRadio: item.hideRadio,
 								uncheck: item.uncheck,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								style: item.style,
 								highlightSel: item.highlightSel,
 							}} />
@@ -341,7 +345,7 @@ const Form = class extends React.Component<any, any> {
 								style: item.style,
 								text: item.text,
 								value: item.value,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 							}} />
 						);
 					case 'tabTextArea':
@@ -355,7 +359,7 @@ const Form = class extends React.Component<any, any> {
 								onUpdate: (e) => { this.onUpdate(e) },
 								style: item.style,
 								device: this.props.device,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								isRequired: item.isRequired,
 								isValid: item.isValid,
 								errorMessage: item.errorMessage,
@@ -374,10 +378,9 @@ const Form = class extends React.Component<any, any> {
 								value: item.value,
 								onUpdate: (e) => { this.onUpdate(e) },
 								style: item.style,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 								updateOnChange: item.updateOnChange,
 								errorMessage: item.errorMessage,
-								greaterThan: item.greaterThan,
 								isValid: item.isValid,
 							}} />
 						);
@@ -395,26 +398,23 @@ const Form = class extends React.Component<any, any> {
 								firstRange: item.firstRange,
 								secondRange: item.secondRange,
 								rangesStyle: item.rangesStyle,
-								fieldClassName: item.fieldClassName ? item.fieldClassName : '',
+								className: item.className ? item.className : '',
 							}} />
 						);
 					}
 				})}
-				{ this.props.textBeforeButton ? this.props.textBeforeButton : null }
-				{ this.props.sendButton ? (
-					<div className="button-container" style={this.props.buttonContainerStyle}>
-						<button {...{
-							className: `${this.props.sendButton.className} ${(this.props.sendButton.disabled ? 'btn-disabled' : '')}`,
-							style: this.props.sendButton.style,
-							onClick: !this.props.sendButton.disabled ? () => { this.formIsValid(this.props.sendButton.className) } : undefined,
-							type: 'button'
-						}}>
-							{this.props.sendButton.value}
-						</button>
-					</div>
-				)
-					: null }
-				{ this.props.textAfterButton ? this.props.textAfterButton : null }
+				{ textBeforeButton }
+				<div className="button-container" style={buttonContainerStyle}>
+					<button {...{
+						className: sendButtonClass,
+						style: sendButton.style,
+						onClick: succeed === null && isSent === null && sendButton.disabled === undefined ? () => { this.formIsValid() } : () => { return null; },
+						type: 'button'
+					}}>
+						{sendButtonValue}
+					</button>
+				</div>
+				{ textAfterButton }
 			</div>
 		);
 	}
@@ -428,6 +428,8 @@ Form.propTypes = {
 	sendButton: PropTypes.instanceOf(Object),
 	style: PropTypes.instanceOf(Object),
 	onUpdate: PropTypes.func,
+	succeed: PropTypes.bool,
+	isSent: PropTypes.bool,
 };
 
 Form.defaultProps = {
@@ -437,6 +439,8 @@ Form.defaultProps = {
 	style: null,
 	onUpdate: null,
 	sendForm: null,
+	succeed: null,
+	isSent: null,
 };
 
 export default Form;

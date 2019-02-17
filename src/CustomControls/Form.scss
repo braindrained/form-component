@@ -22,7 +22,7 @@
 		height: 19px;
 		vertical-align: middle;
 		margin: -2px 3px 0 0;
-		background: url('../assets/img/check_radio_sprite.png') left 0px no-repeat;
+		background: url('/assets/img/check_radio_sprite.png') left 0px no-repeat;
 		cursor: pointer;
 		float: left;
 	}
@@ -36,15 +36,15 @@
 	}
 
 	input[type="checkbox"]:checked + label > div:first-child {
-		background: url('../assets/img/check_radio_sprite.png') -19px 0px no-repeat;
+		background: url('/assets/img/check_radio_sprite.png') -19px 0px no-repeat;
 	}
 
 	input[type="radio"] + label > div:first-child {
-		background: url('../assets/img/check_radio_sprite.png') -39px 0px no-repeat;
+		background: url('/assets/img/check_radio_sprite.png') -39px 0px no-repeat;
 	}
 
 	input[type="radio"]:checked + label > div:first-child {
-		background: url('../assets/img/check_radio_sprite.png') -58px 0px no-repeat;
+		background: url('/assets/img/check_radio_sprite.png') -58px 0px no-repeat;
 	}
 
 	input[type=email], input[type=number], input[type=password], input[type=tel], input[type=text], textarea {
@@ -173,41 +173,42 @@
 
 	.custom-radiocheck {
 		input[type="radio"] + label > div:first-child {
-			background: url('../assets/img/check_radio_sprite.png') -39px 0px no-repeat!important;
+			background: url('/assets/img/check_radio_sprite.png') -39px 0px no-repeat!important;
 		}
 
 		input[type="radio"]:checked + label > div:first-child {
-			background: url('../assets/img/check_radio_sprite.png') -58px 0px no-repeat!important;
+			background: url('/assets/img/check_radio_sprite.png') -58px 0px no-repeat!important;
 		}
 	}
 
-	.select-style{
-		background: #fff url("../assets/img/arrow_down.png") no-repeat right center;
+	.select-style {
+		background: #fff url("/assets/img/arrow_down.png") no-repeat right center;
 		height: 33px;
+		line-height: 33px;
 		width: 100%;
 		display: inline-block;
 		border: 1px solid #949da2;
 		border-radius: 2px;
 		position: relative;
 		z-index: 1;
-		label{
+		label {
 			position: absolute;
 			top: -21px;
 			left: 0;
 			display: block;
-			font-size: 0.96em;
+			font-size:13px;
 			+ select{
 				margin-bottom: 10px;
 				float: left;
 			}
 		}
 		select {
-			padding: 3px 5px 3px 10px;
+			padding: 3px 0px 3px 8px;
 			border: 0;
 			background: transparent;
 			height: 33px;
 			color: #333f48;
-			font-size: 1em;
+			font-size: 13px;
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			width: 100%;
@@ -217,21 +218,6 @@
 			font-family: 'MuseoSans_300', helvetica, arial;
 			@media screen and (max-width: 459px) {
 				height: 47px;
-			}
-		}
-		.select-style-fake {
-			line-height: 33px;
-			font-size: 1em;
-			padding-left: 11px;
-			cursor: pointer;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			width: -webkit-calc(100% - 10px);
-			width: -moz-calc(100% - 10px);
-			width: calc(100% - 10px);
-			@media screen and (max-width: 459px) {
-				line-height: 47px;
 			}
 		}
 		@media screen and (max-width: 459px) {
@@ -264,7 +250,7 @@
 		.float-label {
 			float: left;
 			text-align: left;
-			font-size: 12px;
+			font-size: 13px;
 			width:100%;
 			display: block;
 		}
@@ -323,7 +309,7 @@
 		clear: both;
 		.float-label {
 			text-align: left;
-			font-size: 12px;
+			font-size: 13px;
 			width:100%;
 			display: block;
 		}

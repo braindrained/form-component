@@ -55,10 +55,10 @@ class CustomTextareaWithTab extends React.Component<any, any> {
 	}
 
 	render() {
-		const { fieldClassName, style, device, name, isValid, tabs, value, limitChar } = this.props;
+		const { className, style, device, name, isValid, tabs, value, limitChar } = this.props;
 
 		return (
-			<div className={`field-container ${fieldClassName}`} style={style}>
+			<div className={`field-container ${className}`} style={style}>
 				<div className="field-container-tabs" id={name}>
 					{ this.state.tabs.map((item, i) => (
 						<div {...{

@@ -10,45 +10,36 @@ import { tipologies, priceRanges } from  './helpers/var';
 class App extends Component {
 
 	state = {
-		editDataSpin: false,
+		editDataSpin: null,
 		editSucceed: null,
-		sendButton: {
-			text: 'Save',
-			success: 'Saved!',
-			error: 'Error saving data'
-		},
 		randomKey: makeId(),
-		filter: {
-			priceRange: { min: '', max: '' }
-		}
 	};
 
 	sendForm(formObject: Object) {
-		console.log(formObject);
 		this.setState({
 			editDataSpin: true
 		});
 
+		// put your fetch here
 		setTimeout(() => {
 			this.setState({
 				editDataSpin: false,
 				editSucceed: true
 			});
-		}, 3000);
+		}, 2000);
 	}
 
 	resetButton() {
 		if (this.state.editSucceed !== null) {
 			this.setState({
+				editDataSpin: null,
 				editSucceed: null,
 			});
 		}
 	}
 
   render() {
-		const { editDataSpin, editSucceed, randomKey, sendButton, filter } = this.state;
-		const sendButtonClass = `${editSucceed !== null ? (editSucceed ? 'btn btn-succeed' : 'btn btn-error') : 'btn'} ${editDataSpin ? 'spinner' : ''}`;
-		const sendButtonText = editSucceed !== null ? (editSucceed ? sendButton.success : sendButton.error) : sendButton.text;
+		const { editDataSpin, editSucceed, randomKey } = this.state;
 
     return (
       <div className="App">
@@ -64,12 +55,6 @@ class App extends Component {
 										type: 'text',
 										name: 'firstName',
 										onlyNumber: false,
-										placeholder: 'First name',
-										label: { text: 'First name' },
-										value: '',
-										style: {
-											float: 'left',
-										},
 										limitChar: 25,
 										isRequired: true,
 										errorMessage: 'Campo obbligatorio'
@@ -79,12 +64,6 @@ class App extends Component {
 										type: 'text',
 										name: 'lastName',
 										onlyNumber: false,
-										placeholder: 'Last name',
-										label: { text: 'Last name' },
-										value: '',
-										style: {
-											float: 'left',
-										},
 										limitChar: 25,
 										isRequired: true,
 										errorMessage: 'Campo obbligatorio'
@@ -96,9 +75,9 @@ class App extends Component {
 										label: {
 											text: 'Fake select min/max'
 										},
-										style: {},
-										rangesStyle: { width: 190, maxWidth: 190 },
-										value: filter.priceRange,
+										style: { maxHeight: 76 },
+										rangesStyle: { width: 200, maxWidth: 200 },
+										value: { min: '', max: '' },
 										firstRange: priceRanges,
 										secondRange: priceRanges
 									},
@@ -107,12 +86,6 @@ class App extends Component {
 										type: 'text',
 										name: 'age',
 										onlyNumber: true,
-										placeholder: 'Age',
-										label: { text: 'Age' },
-										value: '',
-										style: {
-											float: 'left'
-										},
 										limitChar: 3
 									},
 									{
@@ -124,21 +97,14 @@ class App extends Component {
 										},
 										value: 0,
 										isRequired: false,
-										style: {
-											float: 'left'
-										},
 									},
 									{
 										control: 'select',
 										name: 'propertyTypeId',
-										label: { text: 'This is a select' },
 										hideRadio: true,
 										options: tipologies.filter(o => o.type.indexOf(parseFloat(1)) !== -1),
 										value: '',
 										optionIf: [],
-										style: {
-											float: 'left'
-										},
 									},
 									{
 										control: 'radio',
@@ -152,8 +118,7 @@ class App extends Component {
 										default: '',
 										value: '',
 										hideRadio: true,
-										fieldClassName: 'custom-radio-container',
-										style: {},
+										className: 'custom-radio-container',
 									},
 									{
 										control: 'radio',
@@ -167,9 +132,6 @@ class App extends Component {
 										default: '',
 										value: '',
 										hideRadio: false,
-										style: {
-											minHeight: 'auto'
-										},
 									},
 									{
 										control: 'text',
@@ -179,9 +141,6 @@ class App extends Component {
 										placeholder: 'Another text input',
 										label: { text: 'Another text input' },
 										value: '',
-										style: {
-											float: 'left'
-										},
 										limitChar: 25,
 									},
 									{
@@ -190,21 +149,12 @@ class App extends Component {
 										label: { text: 'This is an almost real checkbox' },
 										value:	false,
 										hideCheck: true,
-										style: {
-											float: 'left'
-										},
 									},
 									{
 										control: 'text',
 										type: 'password',
-										name: 'pwd',
+										name: 'password',
 										onlyNumber: false,
-										placeholder: 'Password',
-										label: { text: 'Password' },
-										value: '',
-										style: {
-											float: 'left',
-										},
 										limitChar: 12,
 										isRequired: true,
 										errorMessage: 'Campo obbligatorio',
@@ -213,28 +163,46 @@ class App extends Component {
 									{
 										control: 'text',
 										type: 'password',
-										name: 'repeatPwd',
+										name: 'repeatPassword',
 										onlyNumber: false,
-										placeholder: 'Ripeti Password',
-										label: { text: 'Ripeti Password' },
-										value: '',
-										style: {
-											float: 'left',
-										},
 										limitChar: 12,
 										errorMessage: 'La password non coincide',
 										isValid: true,
-										equalTo: 'pwd'
+										equalTo: 'password'
 									},
+									{
+										control: 'textArea',
+										name: 'thisIsATextArea',
+										value: ''
+									},
+									{
+										control: 'text',
+										type: 'text',
+										name: 'aMinimalTextField',
+									},
+									{
+										control: 'text',
+										type: 'text',
+										name: 'correncyField',
+										currency: true,
+										onlyNumber: true,
+									}
 								],
+								textBeforeButton: <div style={{ clear: 'both', fontSize: 11, lineHeight: '30px', textAlign: 'center' }}>This is a text before button</div>,
 								sendButton: {
-									className: sendButtonClass,
-									value: sendButtonText,
+									value: {
+										text: 'Save',
+										errorText: 'Error saving data',
+										succeedText: 'Saved!'
+									},
 									style: { minWidth: 250, margin: '0 auto', float: 'none' }
 								},
+								textAfterButton: <div style={{ clear: 'both', fontSize: 11, lineHeight: '30px', textAlign: 'center' }}>This is a text after button</div>,
 								buttonContainerStyle: { textAlign: 'center' },
 								sendForm: (e) => { this.sendForm(e); },
 								key: randomKey,
+								succeed: editSucceed,
+								isSent: editDataSpin,
 								style: {
 									maxWidth: 560
 								},

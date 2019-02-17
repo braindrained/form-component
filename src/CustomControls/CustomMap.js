@@ -536,11 +536,11 @@ class CustomMap extends React.Component<any, any> {
 	}
 
 	render() {
-		const { fieldClassName, name, actions, jwt, device, isValid, viewport, mapTexts } = this.props;
+		const { className, name, actions, jwt, device, isValid, viewport, mapTexts } = this.props;
 		const { openOverlay, message, hideConfirm, hideCancel, options, resetForm, icon, alertHeight } = this.state;
 
 		return (
-			<div id={name} className={`custom-map ${fieldClassName}`}>
+			<div id={name} className={`custom-map ${className}`}>
 				<div className="custom-map-fields">
 					<div className="custom-map-field geolocation-field">
 						<div className="custom-map-label noselect">

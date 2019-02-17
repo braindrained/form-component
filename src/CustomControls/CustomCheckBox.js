@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
+import { sumClasses } from '../helpers/utils';
 
-// flow-disable-next-line
 import './CustomCheckBox.scss';
 
 export default class CustomCheckBox extends React.Component<any, any> {
@@ -29,10 +29,10 @@ export default class CustomCheckBox extends React.Component<any, any> {
 	}
 
 	render() {
-		const { fieldClassName, style, label, name, textAfter, textBefore } = this.props;
+		const { className, style, label, name, textAfter, textBefore } = this.props;
 
 		return (
-			<div className={`field-container ${fieldClassName !== undefined ? fieldClassName : 'check'} `} style={style}>
+			<div className={sumClasses(['field-container', className !== undefined ? className : 'check'])} style={style}>
 				{textBefore !== null && textBefore !== undefined ? textBefore : ''}
 				<div className="check-filters">
 					<div className="separator" />

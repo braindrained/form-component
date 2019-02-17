@@ -1,6 +1,9 @@
 // @flow
 import React from 'react';
 import PropTypes from 'prop-types';
+import FieldLabel from './childrenComponents/FieldLabel';
+import FieldError from './childrenComponents/FieldError';
+import { sumClasses } from '../helpers/utils';
 
 class CustomPlusMinus extends React.Component<any, any> {
 
@@ -13,9 +16,8 @@ class CustomPlusMinus extends React.Component<any, any> {
 		textAfter: null,
 		onUpdate: null,
 		errorMessage: null,
-		fieldClassName: null,
+		className: null,
 		style: null,
-		formIsValid: null,
 		regEx: null,
 		equalTo: null,
 		isRequired: false,
@@ -78,72 +80,61 @@ class CustomPlusMinus extends React.Component<any, any> {
 	}
 
 	render() {
-		const { fieldClassName, style, label, name, type, disabled, noValidation, isRequired, errorMessage, textAfter } = this.props;
-console.log('render', this.props.name);
+		const { className, style, label, name, type,
+			disabled, isRequired, errorMessage, textAfter,
+			isValid
+		} = this.props;
+
 		return (
-			<div className={`field-container cutom-plus-minus ${fieldClassName}`} style={style}>
-				<div className={this.state.error ? 'text-style has-error' : 'text-style'}>
-					{ label ? (
-						<label className="field-label noselect" style={Object.assign({}, label.style, this.state.error ? { color: '#e4002b' } : {})}>
-							{label.text}
-							{label.object ? label.object : null}
-						</label>) :
-						null
-					}
-					<div style={{ float: 'left' }}>
-						<div {...{
-							onClick: () => { this.plusMinus('min'); },
-							style: {
-								float: 'left',
-								width: 30,
-								lineHeight: '30px',
-								borderRadius: 15,
-								backgroundColor: '#323f48',
-								color: '#fff',
-								fontWeight: 700,
-								textAlign: 'center',
-								fontSize: 16,
-								marginRight: 30,
-								cursor: 'pointer',
-								opacity: this.state.value === 0 ? 0.3 : 1
-							},
-							className: 'box-shadow noselect'
-						}}>
-							-
-						</div>
-						<div style={{ float: 'left' }}>
-							<input {...{
-								type,
-								name,
-								id: name,
-								value: this.state.value,
-								disabled,
-								onKeyPress: (e) => { this.handleKeyPress(e); },
-								onChange: this.onChange.bind(this),
-								onBlur: this.onBlur.bind(this),
-								style: { border: 'none', background: 'none', width: 40, textAlign: 'center' }
-							}} />
-						</div>
-						<div {...{
-							onClick: () => { this.plusMinus('plus'); },
-							style: { float: 'left', width: 30, lineHeight: '30px', borderRadius: 15, backgroundColor: '#323f48', color: '#fff', fontWeight: 700, textAlign: 'center', fontSize: 16, marginLeft: 25, cursor: 'pointer' },
-							className: 'box-shadow noselect'
-						}}>
-							+
-						</div>
+			<div className={sumClasses(['field-container cutom-plus-minus', className])} style={style}>
+				<FieldLabel {...{ label, name, isRequired, isValid }}/>
+				<div style={{ float: 'left' }}>
+					<div {...{
+						onClick: () => { this.plusMinus('min'); },
+						style: {
+							float: 'left',
+							width: 30,
+							lineHeight: '30px',
+							borderRadius: 15,
+							backgroundColor: '#323f48',
+							color: '#fff',
+							fontWeight: 700,
+							textAlign: 'center',
+							fontSize: 16,
+							marginRight: 30,
+							cursor: 'pointer',
+							opacity: this.state.value === 0 ? 0.3 : 1
+						},
+						className: 'box-shadow noselect'
+					}}>
+						-
 					</div>
-					{ noValidation ?
-						null :
-						<span className="validation-error">
-							{ isRequired && this.state.error ? errorMessage : '' }
-							&nbsp;
-						</span>
-					}
-					{ textAfter ? (
-						<div style={textAfter.style}>
-							{textAfter.text}
-						</div>) : null }
+					<div style={{ float: 'left' }}>
+						<input {...{
+							type,
+							name,
+							id: name,
+							value: this.state.value,
+							disabled,
+							onKeyPress: (e) => { this.handleKeyPress(e); },
+							onChange: this.onChange.bind(this),
+							onBlur: this.onBlur.bind(this),
+							style: { border: 'none', background: 'none', width: 40, textAlign: 'center' }
+						}} />
+					</div>
+					<div {...{
+						onClick: () => { this.plusMinus('plus'); },
+						style: { float: 'left', width: 30, lineHeight: '30px', borderRadius: 15, backgroundColor: '#323f48', color: '#fff', fontWeight: 700, textAlign: 'center', fontSize: 16, marginLeft: 25, cursor: 'pointer' },
+						className: 'box-shadow noselect'
+					}}>
+						+
+					</div>
 				</div>
+				<FieldError {...{ isValid, errorMessage }} />
+				{ textAfter ? (
+					<div style={textAfter.style}>
+						{textAfter.text}
+					</div>) : null }
 			</div>
 		);
 	}
@@ -158,11 +149,8 @@ CustomPlusMinus.propTypes = {
 	textAfter: PropTypes.instanceOf(Object),
 	onUpdate: PropTypes.func,
 	errorMessage: PropTypes.string,
-	fieldClassName: PropTypes.string,
+	className: PropTypes.string,
 	style: PropTypes.instanceOf(Object),
-	formIsValid: PropTypes.func,
-	regEx: PropTypes.string,
-	equalTo: PropTypes.func,
 	isRequired: PropTypes.bool,
 	isValid: PropTypes.bool,
 	value: PropTypes.number,
@@ -177,11 +165,8 @@ CustomPlusMinus.defaultProps = {
 	textAfter: null,
 	onUpdate: null,
 	errorMessage: null,
-	fieldClassName: null,
+	className: null,
 	style: null,
-	formIsValid: null,
-	regEx: null,
-	equalTo: null,
 	isRequired: false,
 	isValid: true,
 	value: null,

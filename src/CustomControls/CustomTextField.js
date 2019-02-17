@@ -1,6 +1,9 @@
 // @flow
 import React from 'react';
 import PropTypes from 'prop-types';
+import FieldLabel from './childrenComponents/FieldLabel';
+import FieldError from './childrenComponents/FieldError';
+import { camelToTitle, sumClasses } from '../helpers/utils';
 
 class CustomTextField extends React.Component<any, any> {
 
@@ -13,9 +16,8 @@ class CustomTextField extends React.Component<any, any> {
 		textAfter: null,
 		onUpdate: null,
 		errorMessage: null,
-		fieldClassName: null,
+		className: null,
 		style: null,
-		equalTo: null,
 		isRequired: false,
 		onlyNumber: false,
 		isValid: true,
@@ -24,7 +26,7 @@ class CustomTextField extends React.Component<any, any> {
 
 	state = {
 		value: `${this.props.value}`,
-		error: !this.props.isValid,
+		isValid: this.props.isValid,
 		editing: false,
 	};
 
@@ -45,7 +47,7 @@ class CustomTextField extends React.Component<any, any> {
 		if (!nextProps.isValid) {
 			this.setState({
 				value: nextProps.value,
-				error: !nextProps.isValid,
+				isValid: nextProps.isValid,
 			});
 		}
 	}
@@ -54,7 +56,7 @@ class CustomTextField extends React.Component<any, any> {
 		const value = this.props.limitChar ? event.target.value.substring(0, this.props.limitChar) : event.target.value;
 		this.setState({
 			value: this.props.onlyNumber ? value.replace(/\D/g, '') : value,
-			error: false,
+			isValid: true,
 		});
 		if (this.props.updateOnChange === true) {
 			this.props.onUpdate({
@@ -89,55 +91,39 @@ class CustomTextField extends React.Component<any, any> {
 		} else {
 			this.setState({
 				value: val.target.value,
-				error: false,
+				isValid: true,
 			});
 		}
 	}
 
 	render() {
 		const {
-			fieldClassName, style, label, name, isRequired, greaterThan, regEx,
-			errorMessage, type, placeholder, currency, disabled, noValidation, textAfter, equalTo
+			className, style, label, name, isRequired,
+			errorMessage, type, placeholder, currency, disabled, textAfter
 		} = this.props;
+		const { isValid } = this.state;
 
 		return (
-			<div className={`field-container ${fieldClassName}`} style={style}>
-				<div className={this.state.error ? 'text-style has-error' : 'text-style'}>
-					{ label ? (
-						<label className="field-label noselect" style={Object.assign({}, label.style, this.state.error ? { color: '#e4002b' } : {})}>
-							{label.text} { isRequired ? '*' : null }
-							{label.object ? label.object : null}
-						</label>) :
-						null
-					}
-					<div>
-						<input {...{
-							type,
-							placeholder,
-							name,
-							id: name,
-							value: currency ? this.state.value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.') : this.state.value,
-							disabled,
-							onKeyPress: (e) => { this.handleKeyPress(e); },
-							onChange: (e) => { this.onChange(e); },
-							onBlur: (e) => { this.onBlur(e); },
-							onFocus: () => { this.onFocus(); },
-							style:  this.state.error ? { border: '1px solid #e4002b' } : {}
-						}} />
-					</div>
-					{ noValidation ?
-						null
-						:
-						<div className="validation-error noselect">
-							{(isRequired || greaterThan || regEx || equalTo) && this.state.error ? errorMessage : '' }
-							&nbsp;
-						</div>
-					}
-					{ textAfter ? (
-						<div style={textAfter.style}>
-							{textAfter.text}
-						</div>) : null }
-				</div>
+			<div className={sumClasses(['field-container', className])} style={style}>
+				<FieldLabel {...{ label, name, isRequired, isValid }}/>
+				<input {...{
+					type,
+					placeholder: camelToTitle(placeholder, name),
+					name,
+					id: name,
+					value: currency ? this.state.value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.') : this.state.value,
+					disabled,
+					onKeyPress: (e) => { this.handleKeyPress(e); },
+					onChange: (e) => { this.onChange(e); },
+					onBlur: (e) => { this.onBlur(e); },
+					onFocus: () => { this.onFocus(); },
+					style: isValid === false ? { border: '1px solid #e4002b' } : {}
+				}} />
+				<FieldError {...{ isValid, errorMessage }} />
+				{ textAfter ? (
+					<div style={textAfter.style}>
+						{textAfter.text}
+					</div>) : null }
 			</div>
 		);
 	}
@@ -152,9 +138,8 @@ CustomTextField.propTypes = {
 	textAfter: PropTypes.instanceOf(Object),
 	onUpdate: PropTypes.func,
 	errorMessage: PropTypes.string,
-	fieldClassName: PropTypes.string,
+	className: PropTypes.string,
 	style: PropTypes.instanceOf(Object),
-	equalTo: PropTypes.string,
 	isRequired: PropTypes.bool,
 	onlyNumber: PropTypes.bool,
 	isValid: PropTypes.bool,
@@ -173,9 +158,8 @@ CustomTextField.defaultProps = {
 	textAfter: null,
 	onUpdate: null,
 	errorMessage: null,
-	fieldClassName: null,
+	className: null,
 	style: null,
-	equalTo: '',
 	isRequired: false,
 	onlyNumber: false,
 	isValid: true,
