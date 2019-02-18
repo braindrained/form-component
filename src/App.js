@@ -171,6 +171,12 @@ class App extends Component {
 										equalTo: 'password'
 									},
 									{
+										control: 'label',
+										name: 'label-1',
+										text: 'This is a label that separate things',
+										style: { lineHeight: '40px', clear: 'both', width: '100%', fontSize: 16, fontWeight: 700, marginBottom: 20 }
+									},
+									{
 										control: 'textArea',
 										name: 'thisIsATextArea',
 										value: ''
@@ -190,11 +196,9 @@ class App extends Component {
 								],
 								textBeforeButton: <div style={{ clear: 'both', fontSize: 11, lineHeight: '30px', textAlign: 'center' }}>This is a text before button</div>,
 								sendButton: {
-									value: {
-										text: 'Save',
-										errorText: 'Error saving data',
-										succeedText: 'Saved!'
-									},
+									text: 'Save',
+									errorText: 'Error saving data',
+									succeedText: 'Saved!',
 									style: { minWidth: 250, margin: '0 auto', float: 'none' }
 								},
 								textAfterButton: <div style={{ clear: 'both', fontSize: 11, lineHeight: '30px', textAlign: 'center' }}>This is a text after button</div>,

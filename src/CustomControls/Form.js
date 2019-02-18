@@ -187,7 +187,7 @@ const Form = class extends React.Component<any, any> {
 			isSent ? 'spinner' : '',
 			sendButton.disabled ? 'btn-disabled' : ''
 		]);
-		const sendButtonValue = succeed === null ? sendButton.value.text : succeed === false ? sendButton.value.errorText : sendButton.value.succeedText;
+		const sendButtonValue = succeed === null ? sendButton.text : succeed === false ? sendButton.errorText : sendButton.succeedText;
 
 		return (
 			<div className={sumClasses(['form-container', className !== null && className !== undefined ? className : ''])} style={style}>
