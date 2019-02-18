@@ -51,6 +51,12 @@ class App extends Component {
 							<Form {...{
 								controls: [
 									{
+										control: 'label',
+										name: 'label-1',
+										text: 'This is a generic label',
+										style: { lineHeight: '40px', clear: 'both', width: '100%', fontSize: 16, fontWeight: 700, marginBottom: 20 }
+									},
+									{
 										control: 'text',
 										type: 'text',
 										name: 'firstName',
@@ -172,8 +178,8 @@ class App extends Component {
 									},
 									{
 										control: 'label',
-										name: 'label-1',
-										text: 'This is a label that separate things',
+										name: 'label-2',
+										text: 'This is a generic label that separate things',
 										style: { lineHeight: '40px', clear: 'both', width: '100%', fontSize: 16, fontWeight: 700, marginBottom: 20 }
 									},
 									{
