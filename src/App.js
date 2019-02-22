@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ClickOutHandler from 'react-onclickout';
+import Footer from 'client-footer';
+import Form from 'client-form';
 
 import './App.css';
 import './App.scss';
-import Form from './CustomControls/Form';
 import { makeId } from './helpers/utils';
 import { tipologies, priceRanges } from  './helpers/var';
 
@@ -44,7 +45,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-					This is a Form component
+					This is a component that import two custom components from bitbucket.<br/>
+					One is for Form, and the other for footer.
         </header>
 					<ClickOutHandler onClickOut={() => { this.resetButton(); }}>
 						<div className="App-body" onClick={() => { this.resetButton(); }}>
@@ -219,6 +221,7 @@ class App extends Component {
 							}} />
 						</div>
 					</ClickOutHandler>
+					<Footer />
       </div>
     );
   }

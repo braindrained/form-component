@@ -10,7 +10,9 @@
     "react-datepicker": "^2.1.0",
     "react-dom": "^16.8.1",
     "react-onclickout": "^2.0.8",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+		"client-footer": "git+ssh://git@bitbucket.org:casait/it.casa.client.footer.git#0.0.6",
+		"client-form": "git+ssh://git@bitbucket.org:casait/it.casa.client.form.git#0.0.3"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
