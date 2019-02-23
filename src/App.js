@@ -17,6 +17,7 @@ class App extends Component {
 	};
 
 	sendForm(formObject: Object) {
+		console.log(formObject);
 		this.setState({
 			editDataSpin: true
 		});
@@ -56,7 +57,7 @@ class App extends Component {
 										control: 'label',
 										name: 'label-1',
 										text: 'This is a generic label',
-										style: { lineHeight: '40px', clear: 'both', width: '100%', fontSize: 16, fontWeight: 700, marginBottom: 20 }
+										style: { lineHeight: '40px', clear: 'both', width: 'calc(100% - 30px)', fontSize: 16, fontWeight: 700, margin: '0 auto 20px' }
 									},
 									{
 										control: 'text',
@@ -182,7 +183,7 @@ class App extends Component {
 										control: 'label',
 										name: 'label-2',
 										text: 'This is a generic label that separate things',
-										style: { lineHeight: '40px', clear: 'both', width: '100%', fontSize: 16, fontWeight: 700, marginBottom: 20 }
+										style: { lineHeight: '40px', clear: 'both', width: 'calc(100% - 30px)', fontSize: 16, fontWeight: 700, margin: '0 auto 20px' }
 									},
 									{
 										control: 'textArea',
@@ -197,10 +198,35 @@ class App extends Component {
 									{
 										control: 'text',
 										type: 'text',
-										name: 'correncyField',
+										name: 'currencyField',
 										currency: true,
 										onlyNumber: true,
-									}
+									},
+									{
+										control: 'tabTextArea',
+										name: 'description',
+										value: [
+											{ name: 'listingDescIt', value: '', isRequired: true, isValid: true },
+											{ name: 'listingDescEn', value: '', isRequired: false, isValid: true },
+											{ name: 'listingDescFr', value: '', isRequired: false, isValid: true },
+											{ name: 'listingDescEs', value: '', isRequired: false, isValid: true },
+											{ name: 'listingDescDe', value: '', isRequired: false, isValid: true }
+										],
+										tabs: [
+											{ name: 'listingDescIt', label: 'Italiano', abbr: 'IT', placeholder: 'Inserisci qui la descrizione' },
+											{ name: 'listingDescEn', label: 'Inglese', abbr: 'EN', placeholder: 'Descrizione inglese' },
+											{ name: 'listingDescFr', label: 'Francese', abbr: 'FR', placeholder: 'Descrizione francese' },
+											{ name: 'listingDescEs', label: 'Spagnolo', abbr: 'ES', placeholder: 'Descrizione spagnolo' },
+											{ name: 'listingDescDe', label: 'Tedesco', abbr: 'DE', placeholder: 'Descrizione tedesco' },
+										],
+										style: { width: 'calc(100% - 30px)' },
+										isRequired: true,
+										isValid: true,
+										errorMessage: 'La descrizione in italiano è obbligatoria',
+										fieldClassName: 'tabTextArea',
+										valueAsObject: true,
+										limitChar: 4000
+									},
 								],
 								textBeforeButton: <div style={{ clear: 'both', fontSize: 11, lineHeight: '30px', textAlign: 'center' }}>This is a text before button</div>,
 								sendButton: {
