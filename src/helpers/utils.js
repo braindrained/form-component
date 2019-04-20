@@ -84,16 +84,14 @@ export const makeId = () => {
 
 export const notEmpty = (val: any) => val !== null && val !== undefined && val !== '';
 
-export const camelToTitle = (str: string, name: string) => {
-    return str === null ? name.replace(/([A-Z][a-z]+)/g, " $1") // Words beginning with UC
-    .replace(/([A-Z][A-Z]+)/g, " $1") // "Words" of only UC
-    .replace(/([^A-Za-z ]+)/g, " $1") // "Words" of non-letters
+export const camelToTitle = (str: string, name: string) => str === null || str === undefined ?
+	name.replace(/([a-z\d])([A-Z])/g, '$1  $2')
+		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
 		.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
-		: str;
-};
+	: str;
 
 export const sumClasses = (classes: Array<string>) => {
-	const filteredClasses = classes.filter(o => o !== '');
+	const filteredClasses = classes.filter(o => o !== '' && o !== undefined);
 	let returnEach = '';
 	filteredClasses.map((item, i) => {
 		returnEach += i === filteredClasses.length - 1 ? `${item}` : `${item} `;
